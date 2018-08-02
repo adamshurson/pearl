@@ -1,8 +1,8 @@
 {
   "name": "pearl.js",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Distributed data dependency and state management",
-  "main": "build/index.js",
+  "main": "dist/index.js",
   "dependencies": {
     "webpack": "^2.6.1"
   },
