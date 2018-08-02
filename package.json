@@ -1,6 +1,6 @@
 {
-  "name": "pearl.js",
-  "version": "1.0.18",
+  "name": "pearlJS",
+  "version": "1.0.0",
   "description": "Distributed data dependency and state management",
   "main": "dist/index.js",
   "dependencies": {
