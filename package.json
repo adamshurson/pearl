@@ -1,8 +1,8 @@
 {
   "name": "@ashurson/pearl",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Distributed data dependency and state management",
-  "main": "dist/index.js",
+  "main": "build/index.js",
   "dependencies": {
     "webpack": "^2.6.1"
   },
