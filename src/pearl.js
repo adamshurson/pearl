@@ -10,7 +10,7 @@ class Pearl {
         return window[this.constructor.name];
     }
     init() {
-        throw new Error("Init function not set");
+        throw new Error("PearlError: Init function not set");
     }
     setState(newState) {
         this.history.push(this.state);
