@@ -32,8 +32,10 @@
       let fromTop = window.scrollY;
 
       mainNavLinks.forEach(link => {
-        console.log(link);
         let header = document.querySelector(link.hash);
+        if (header == null) {
+          return;
+        }
         let section = header.parentElement;
 
         if (
