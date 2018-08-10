@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pearl</title>
+  <link rel="stylesheet" href="/styles/style.processed.css?v=2">
+  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,700|Markazi+Text" rel="stylesheet">
+</head>  
+ 
+<body>
+  
+  <button id="hamburger">☰</button>
+  
+  <header class="site-header">
+    <h1>Pearl</h1>
+    <p>A JavaScript library for building components to manage distributed data/state dependencies.</p>
+    <p>By <a href="https://github.com/adamshurson">Adam Shurson</a></p>
+  </header>
+  
+  <div class="logo">
+    <img width="128" height="128" src="pearl-design.png" />
+  </div>
+
+  <nav id="sidebar-nav" class="sidebar-nav">
+    
+    <div class="sticky-inside">
+      
+      <div class="just-nav">
+        <h4>Overview</h4>
+        <ul>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#practical-usage">Practial Usage</a></li>
+        </ul>
+
+        <h4>Methods</h4>
+        <ul>
+        <li><a href="#init">init</a></li>
+        <li><a href="#setState">setState</a></li>
+        <li><a href="#subscribe">subscribe</a></li>
+        </ul>
+        
+        <a href="https://github.com/adamshurson/pearl" class="github-link">
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path d="M12,2A10,10 0 0,0 2,12C2,16.42 4.87,20.17 8.84,21.5C9.34,21.58 9.5,21.27 9.5,21C9.5,20.77 9.5,20.14 9.5,19.31C6.73,19.91 6.14,17.97 6.14,17.97C5.68,16.81 5.03,16.5 5.03,16.5C4.12,15.88 5.1,15.9 5.1,15.9C6.1,15.97 6.63,16.93 6.63,16.93C7.5,18.45 8.97,18 9.54,17.76C9.63,17.11 9.89,16.67 10.17,16.42C7.95,16.17 5.62,15.31 5.62,11.5C5.62,10.39 6,9.5 6.65,8.79C6.55,8.54 6.2,7.5 6.75,6.15C6.75,6.15 7.59,5.88 9.5,7.17C10.29,6.95 11.15,6.84 12,6.84C12.85,6.84 13.71,6.95 14.5,7.17C16.41,5.88 17.25,6.15 17.25,6.15C17.8,7.5 17.45,8.54 17.35,8.79C18,9.5 18.38,10.39 18.38,11.5C18.38,15.32 16.04,16.16 13.81,16.41C14.17,16.72 14.5,17.33 14.5,18.26C14.5,19.6 14.5,20.68 14.5,21C14.5,21.27 14.66,21.59 15.17,21.5C19.14,20.16 22,16.42 22,12A10,10 0 0,0 12,2Z" />
+          </svg>
+          Project on GitHub
+        </a>
+        
+      </div>
+      
+    </div>
+
+  </nav>
+    
+  <main>   
+    
+    <section>
+      <h2 id="introduction">Introduction</h2>
+<p>Many other state management projects depend on a central, synchronized state store. It felt like an anti-pattern to me, so I started Pearl.</p>
+<p>Modern-day frontend is all about components and, in turn, reducing the centrality of applications. To combine central state management with this seemed silly.</p>
+<p>Pearl is a libary for creating components that encapsulate a single concern of your application. These components have their own state, and must be explicitly subscribed to. They do not know how to update their dependents, they only know when.</p>
+<p>Similarily, when a component of your application subscribes to a Pearl component, your component will not know when it needs to update its own state. It will provide the Pearl component with instructions on how to update it, and the Pearl component will
+  take care of the rest.</p>
+<p>Pearl can be used with any other library / frameworks you love using. As long as you are using ES6, you can take advantage of what Pearl has to offer.</p>
+    </section>
+    
+    <section>
+      <h2 id="installation">Installation</h2>
+<p>Pearl is available on npm, so you can:</p>
+<pre><code class="lang-bash">npm i @ashurson/pearl --save
+</code></pre>
+<p>Then use it in your JavaScript like:</p>
+<pre><code class="lang-js">import Pearl from &quot;pearl&quot;;
+</code></pre>
+    </section>
+  
+    <section>
+      <h2 id="getting-started">Getting Started</h2>
+<p>Writing a Pearl component is easy.</p>
+<pre><code class="lang-javascript">import Pearl from &#39;pearl&#39;;
+export default class MyPearlComponent extends Pearl {
+  init() {
+    this.setState({
+      myVar: &#39;foo&#39;
+    });
+  }
+}
+</code></pre>
+<p>The only function you have to write is the init. This will be called when the component is used in other classes.</p>
+    </section> 
+
+    <section>
+      <h2 id="practical-usage">Practical Usage</h2>
+<p>Once you have created a Pearl component, you can subscribe your React/Vue/etc. components to the Pearl component state. Below is an example with React:</p>
+<pre><code class="lang-javascript">import MyPearlComponent from &#39;MyPearlComponent&#39;;
+class MyReactComponent extends React.Component {
+  constructor() {
+    this.state = {
+      name: &#39;World&#39;
+    };
+    // create a variable that references our Pearl component
+    this.MyPearlComponent = new MyPearlComponent();
+    // subscribe to changes in the Pearl components state
+    this.MyPearlComponent.subscribe( (newMyPearlComponentState) =&gt; {
+      this.setState({
+        name: newMyPearlComponentState.name
+      });
+    });
+  }
+  render() {
+    return &lt;h1&gt;Hello, {this.state.name}&lt;/h1&gt;;
+  }
+}
+</code></pre>
+<p>A few things:</p>
+<ul>
+  <li>Using the arrow function notation is <strong>required</strong> if your callback references MyReactComponent (which it probably will)</li>
+  <li>You can use MyPearlComponent (and other extensions of Pearl) in any number of your own components. All pearl extensions act as singletons, so declaring a new MyPearlComponent() will still return the same reference</li>
+  <li>This is important for adding your own functionalities to your Pearl components, such as methods that manipulate the component state</li>
+</ul> 
+    </section>
+    
+    <section>
+      <h2 id="init">Init</h2>
+<p>This function is called when the Pearl component is initiated. This is used for setting the initial state of your Pearl component and <strong>must</strong> be implemented. Example:</p>
+<pre><code class="lang-js">class MyPearlComponent extends Pearl {
+  init() {
+    this.setState({
+      stateVar: &#39;foo&#39;
+    });
+  }
+}
+</code></pre>
+    </section>
+    
+    <section>
+      <h2 id="setstate">SetState</h2>
+<pre><code class="lang-js">setState(updatedFields: object)
+</code></pre>
+<p>Setting the state is the preffered way of manipulating a Pearl components state. After the state is updated, the Pearl component will automatically update its subscribers.</p>
+<ul>
+  <li>updatedFields: similar to React.js setState, the updatedFields parameter is a javascript object containing the updated state.</li>
+</ul> 
+    </section>
+    
+    <section>
+      <h2 id="subscribe">Subscribe</h2>
+<pre><code class="lang-js">subscribe(callback: Function, field?: string)
+</code></pre>
+<p>Subscribing to a Pearl component will update the subscriber when the Pearl components state has been changed.</p>
+<ul>
+  <li>Callback: this function will be called when the Pearl component state is updated. The callback will be provided with a single parameter, which is the new state of the Pearl component.</li>
+  <li>Field: an optional parameter. If included, the subscriber will only be updated if the field specified changes in the Pearl component. The callback parameter will be the field, instead of the entire state object.</li>
+</ul> 
+    </section>
+
+  </main>
+
+  <script src="/scripts/prism.js"></script>
+  <script src="/scripts/index.js"></script>
+   
+</body>
+
+</html>

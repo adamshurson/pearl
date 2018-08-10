@@ -1,0 +1,69 @@
+body {
+  font-family: $font-family-body;
+  font-size: 133%;
+  line-height: 1.2;
+  @media #{$small-screen} {
+    font-size: 120%;
+  }
+}
+
+code,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-family-mono;
+}
+
+p > code,
+li > code {
+  // interesting:
+  // https://developer.mozilla.org/en-US/docs/Web/CSS/font-size-adjust
+  font-size: 75%;
+  background: #eee;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+a {
+  text-decoration: none;
+  main section &,
+  .site-footer & {
+    text-decoration: underline;
+    color: $link;
+    &:hover,
+    &:focus {
+      color: darken($link, 25%);
+    }
+  }
+}
+main {
+  p,
+  pre,
+  ol,
+  ul {
+    margin: 0 0 1rem 0;
+  }
+  p,
+  li {
+    max-width: 600px;
+  }
+  ul {
+    list-style: none;
+    padding: 0 0 0 1rem;
+    li {
+      text-indent: -0.7rem;
+      &::before {
+        content: "▪ ";
+        color: $primary;
+      }
+    }
+  }
+  ol, ul {
+    li {
+      margin: 0 0 0.25rem;
+    }
+  }
+}

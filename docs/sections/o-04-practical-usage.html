@@ -1,0 +1,28 @@
+<h2 id="practical-usage">Practical Usage</h2>
+<p>Once you have created a Pearl component, you can subscribe your React/Vue/etc. components to the Pearl component state. Below is an example with React:</p>
+<pre><code class="lang-javascript">import MyPearlComponent from &#39;MyPearlComponent&#39;;
+class MyReactComponent extends React.Component {
+  constructor() {
+    this.state = {
+      name: &#39;World&#39;
+    };
+    // create a variable that references our Pearl component
+    this.MyPearlComponent = new MyPearlComponent();
+    // subscribe to changes in the Pearl components state
+    this.MyPearlComponent.subscribe( (newMyPearlComponentState) =&gt; {
+      this.setState({
+        name: newMyPearlComponentState.name
+      });
+    });
+  }
+  render() {
+    return &lt;h1&gt;Hello, {this.state.name}&lt;/h1&gt;;
+  }
+}
+</code></pre>
+<p>A few things:</p>
+<ul>
+  <li>Using the arrow function notation is <strong>required</strong> if your callback references MyReactComponent (which it probably will)</li>
+  <li>You can use MyPearlComponent (and other extensions of Pearl) in any number of your own components. All pearl extensions act as singletons, so declaring a new MyPearlComponent() will still return the same reference</li>
+  <li>This is important for adding your own functionalities to your Pearl components, such as methods that manipulate the component state</li>
+</ul>

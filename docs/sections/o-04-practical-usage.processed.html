@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="//codepen.io/CodePenTemplates/pen/GNoNGy.css" />
+  <link rel="stylesheet" href="//codepen.io/CodePenTemplates/pen/XNXpgM.css" />
+</head>
+
+<body>
+  <section class="markdown-body">
+    <h2 id="practical-usage">Practical Usage</h2>
+    <p>Once you have created a Pearl component, you can subscribe your React/Vue/etc. components to the Pearl component state. Below is an example with React:</p>
+    <pre><code class="lang-javascript"><span class="hljs-keyword">import</span> <span class="hljs-type">MyPearlComponent</span> from <span class="hljs-symbol">'MyPearlComponen</span>t';
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyReactComponent</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">React</span>.<span class="hljs-title">Component</span> </span>{
+  constructor() {
+    <span class="hljs-keyword">this</span>.state = {
+      name: <span class="hljs-symbol">'Worl</span>d'
+    };
+    <span class="hljs-comment">// create a variable that references our Pearl component</span>
+    <span class="hljs-keyword">this</span>.<span class="hljs-type">MyPearlComponent</span> = <span class="hljs-keyword">new</span> <span class="hljs-type">MyPearlComponent</span>();
+    <span class="hljs-comment">// subscribe to changes in the Pearl components state</span>
+    <span class="hljs-keyword">this</span>.<span class="hljs-type">MyPearlComponent</span>.subscribe( (newMyPearlComponentState) =&gt; {
+      <span class="hljs-keyword">this</span>.setState({
+        name: newMyPearlComponentState.name
+      });
+    });
+  }
+  render() {
+    <span class="hljs-keyword">return</span> &lt;h1&gt;<span class="hljs-type">Hello</span>, {<span class="hljs-keyword">this</span>.state.name}&lt;/h1&gt;;
+  }
+}
+</code></pre>
+    <p>A few things:</p>
+    <ul>
+      <li>Using the arrow function notation is <strong>required</strong> if your callback references MyReactComponent (which it probably will)</li>
+      <li>You can use MyPearlComponent (and other extensions of Pearl) in any number of your own components. All pearl extensions act as singletons, so declaring a new MyPearlComponent() will still return the same reference</li>
+      <li>This is important for adding your own functionalities to your Pearl components, such as methods that manipulate the component state</li>
+    </ul>
+
+  </section>
+</body>
+
+</html>
