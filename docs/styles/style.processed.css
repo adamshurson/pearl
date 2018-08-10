@@ -359,7 +359,7 @@ body {
   padding: 2rem 1rem;
 }
 
-.logo svg {
+.logo img {
   display: block;
   fill: white;
   width: 100px;
@@ -368,7 +368,7 @@ body {
 }
 
 @media (max-width: 700px) {
-  .logo svg {
+  .logo img {
     display: none;
   }
 }
