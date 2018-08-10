@@ -1,5 +1,5 @@
 {
-  "name": "pearlJS",
+  "name": "@ashurson/pearl",
   "version": "1.0.0",
   "description": "Distributed data dependency and state management",
   "main": "dist/index.js",
