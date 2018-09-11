@@ -109,65 +109,61 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var window = global.window || window;
 
-var Pearl = function Pearl(init) {
-    var _this = this;
-
+var Pearl = function Pearl(className, init) {
     _classCallCheck(this, Pearl);
 
-    if (window[this.constructor.name] === undefined) {
+    if (window[className] === undefined) {
         init = init || function () {
             throw new Error("Init not defined");
         };
-        window[this.constructor.name] = {
+        window[className] = {
             subscribers: [],
             state: {},
             history: [],
             init: init,
-            extend: function extend(name, fn) {
-                window[_this.constructor.name][name] = fn;
-            },
             setState: function setState(newState) {
-                window[_this.constructor.name].history.push(window[_this.constructor.name].state);
-                var temp = Object.assign({}, window[_this.constructor.name].state);
-                window[_this.constructor.name].state = Object.assign(temp, newState);
-                window[_this.constructor.name].update();
+                window[className].history.push(window[className].state);
+                var temp = Object.assign({}, window[className].state);
+                window[className].state = Object.assign(temp, newState);
+                window[className].update();
             },
             subscribe: function subscribe(callback, field) {
                 field = field || null;
-                window[_this.constructor.name].subscribers.push({
+                window[className].subscribers.push({
                     callback: callback,
                     field: field
                 });
-                callback(window[_this.constructor.name].state[field] || window[_this.constructor.name].state);
+                callback(window[className].state[field] || window[className].state);
             },
             update: function update() {
-                for (var i = 0; i < window[_this.constructor.name].subscribers.length; i++) {
-                    var field = window[_this.constructor.name].subscribers[i].field || null;
+                for (var i = 0; i < window[className].subscribers.length; i++) {
+                    var field = window[className].subscribers[i].field || null;
                     if (field === null) {
-                        window[_this.constructor.name].subscribers[i].callback(window[_this.constructor.name].state);
+                        window[className].subscribers[i].callback(window[className].state);
                     } else {
-                        if (window[_this.constructor.name].state.hasOwnProperty(field)) {
+                        if (window[className].state.hasOwnProperty(field)) {
                             // field must be changed if state includes it now
-                            if (window[_this.constructor.name].history.length <= 1) {
-                                window[_this.constructor.name].subscribers[i].callback(window[_this.constructor.name].state);
+                            if (window[className].history.length <= 1) {
+                                window[className].subscribers[i].callback(window[className].state);
                             } else {
                                 // check if state field has changed in history
-                                if (window[_this.constructor.name].history[window[_this.constructor.name].history.length - 2][field] !== window[_this.constructor.name].history[window[_this.constructor.name].history.length - 1][field]) {
-                                    window[_this.constructor.name].subscribers[i].callback(window[_this.constructor.name].state[field]);
+                                if (window[className].history[window[className].history.length - 2][field] !== window[className].history[window[className].history.length - 1][field]) {
+                                    window[className].subscribers[i].callback(window[className].state[field]);
                                 } else {
                                     console.log('state updated but field not changed');
                                 }
                             }
                         } else {
-                            throw new Error("Field: " + field + " does not exist in state of " + _this.constructor.name);
+                            throw new Error("Field: " + field + " does not exist in state of " + className);
                         }
                     }
                 }
             }
         };
-        window[this.constructor.name].init();
+        window[className].init.bind(window[className]);
+        window[className].init();
     }
-    return window[this.constructor.name];
+    return window[className];
 };
 
 exports.default = Pearl;
