@@ -2,7 +2,7 @@ const window = global.window || window;
 class Pearl {
     constructor(className, init) {
         if (window[className] === undefined) {
-            init = init || function() {throw new Error("Init not defined")};
+            init = init || function() {console.log(className + ' init not set.')};
             window[className] = {
                 subscribers: [],
                 state: {},
