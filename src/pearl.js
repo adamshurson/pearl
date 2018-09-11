@@ -1,10 +1,10 @@
 class Pearl {
-    subscribers = [];
-    state = {};
-    history = [];
     constructor() {
         if (window[this.constructor.name] === undefined) {
             window[this.constructor.name] = this;
+            window[this.constructor.name].subscribers = [];
+            window[this.constructor.name].state = {};
+            window[this.constructor.name].history = [];
             window[this.constructor.name].init();
         }
         return window[this.constructor.name];
@@ -13,33 +13,33 @@ class Pearl {
         throw new Error("PearlError: Init function not set");
     }
     setState(newState) {
-        this.history.push(this.state);
-        const temp = Object.assign({}, this.state);
-        this.state = Object.assign(temp, newState);
-        this.update();
+        window[this.constructor.name].history.push(window[this.constructor.name].state);
+        const temp = Object.assign({}, window[this.constructor.name].state);
+        window[this.constructor.name].state = Object.assign(temp, newState);
+        window[this.constructor.name].update();
     }
     subscribe(callback, field) {
         field = field || null;
-        this.subscribers.push({
+        window[this.constructor.name].subscribers.push({
             callback: callback,
             field: field
         });
-        callback(this.state[field] || this.state);
+        callback(window[this.constructor.name].state[field] || window[this.constructor.name].state);
     }
     update() {
-        for (let i = 0; i < this.subscribers.length; i++) {
-            const field = this.subscribers[i].field || null;
+        for (let i = 0; i < window[this.constructor.name].subscribers.length; i++) {
+            const field = window[this.constructor.name].subscribers[i].field || null;
             if (field === null) {
-                this.subscribers[i].callback(this.state);
+                window[this.constructor.name].subscribers[i].callback(window[this.constructor.name].state);
             } else {
-                if (this.state.hasOwnProperty(field)) {
+                if (window[this.constructor.name].state.hasOwnProperty(field)) {
                     // field must be changed if state includes it now
-                    if (this.history.length <= 1) {
-                        this.subscribers[i].callback(this.state);
+                    if (window[this.constructor.name].history.length <= 1) {
+                        window[this.constructor.name].subscribers[i].callback(window[this.constructor.name].state);
                     } else {
                         // check if state field has changed in history
-                        if (this.history[this.history.length-2][field] !== this.history[this.history.length-1][field]) {
-                            this.subscribers[i].callback(this.state[field]);
+                        if (window[this.constructor.name].history[window[this.constructor.name].history.length-2][field] !== window[this.constructor.name].history[window[this.constructor.name].history.length-1][field]) {
+                            window[this.constructor.name].subscribers[i].callback(window[this.constructor.name].state[field]);
                         } else {
                             console.log('state updated but field not changed');
                         }

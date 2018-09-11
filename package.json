@@ -1,6 +1,6 @@
 {
   "name": "@ashurson/pearl",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Distributed data dependency and state management",
   "main": "build/index.js",
   "dependencies": {
