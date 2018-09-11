@@ -64,99 +64,114 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(global) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Pearl = function () {
-    function Pearl() {
-        _classCallCheck(this, Pearl);
+var window = global.window || window;
 
-        if (window[this.constructor.name] === undefined) {
-            window[this.constructor.name] = this;
-            window[this.constructor.name].subscribers = [];
-            window[this.constructor.name].state = {};
-            window[this.constructor.name].history = [];
-            window[this.constructor.name].init();
-            window[this.constructor.name].extend();
-        }
-        return window[this.constructor.name];
-    }
+var Pearl = function Pearl(init) {
+    var _this = this;
 
-    _createClass(Pearl, [{
-        key: "init",
-        value: function init() {
-            throw new Error("PearlError: Init function not set");
-        }
-    }, {
-        key: "extend",
-        value: function extend(functionObject) {
-            window[this.constructor.name].functions = functionObject;
-        }
-    }, {
-        key: "setState",
-        value: function setState(newState) {
-            window[this.constructor.name].history.push(window[this.constructor.name].state);
-            var temp = Object.assign({}, window[this.constructor.name].state);
-            window[this.constructor.name].state = Object.assign(temp, newState);
-            window[this.constructor.name].update();
-        }
-    }, {
-        key: "subscribe",
-        value: function subscribe(callback, field) {
-            field = field || null;
-            window[this.constructor.name].subscribers.push({
-                callback: callback,
-                field: field
-            });
-            callback(window[this.constructor.name].state[field] || window[this.constructor.name].state);
-        }
-    }, {
-        key: "update",
-        value: function update() {
-            for (var i = 0; i < window[this.constructor.name].subscribers.length; i++) {
-                var field = window[this.constructor.name].subscribers[i].field || null;
-                if (field === null) {
-                    window[this.constructor.name].subscribers[i].callback(window[this.constructor.name].state);
-                } else {
-                    if (window[this.constructor.name].state.hasOwnProperty(field)) {
-                        // field must be changed if state includes it now
-                        if (window[this.constructor.name].history.length <= 1) {
-                            window[this.constructor.name].subscribers[i].callback(window[this.constructor.name].state);
-                        } else {
-                            // check if state field has changed in history
-                            if (window[this.constructor.name].history[window[this.constructor.name].history.length - 2][field] !== window[this.constructor.name].history[window[this.constructor.name].history.length - 1][field]) {
-                                window[this.constructor.name].subscribers[i].callback(window[this.constructor.name].state[field]);
-                            } else {
-                                console.log('state updated but field not changed');
-                            }
-                        }
+    _classCallCheck(this, Pearl);
+
+    if (window[this.constructor.name] === undefined) {
+        init = init || function () {
+            throw new Error("Init not defined");
+        };
+        window[this.constructor.name] = {
+            subscribers: [],
+            state: {},
+            history: [],
+            init: init,
+            extend: function extend(name, fn) {
+                window[_this.constructor.name][name] = fn;
+            },
+            setState: function setState(newState) {
+                window[_this.constructor.name].history.push(window[_this.constructor.name].state);
+                var temp = Object.assign({}, window[_this.constructor.name].state);
+                window[_this.constructor.name].state = Object.assign(temp, newState);
+                window[_this.constructor.name].update();
+            },
+            subscribe: function subscribe(callback, field) {
+                field = field || null;
+                window[_this.constructor.name].subscribers.push({
+                    callback: callback,
+                    field: field
+                });
+                callback(window[_this.constructor.name].state[field] || window[_this.constructor.name].state);
+            },
+            update: function update() {
+                for (var i = 0; i < window[_this.constructor.name].subscribers.length; i++) {
+                    var field = window[_this.constructor.name].subscribers[i].field || null;
+                    if (field === null) {
+                        window[_this.constructor.name].subscribers[i].callback(window[_this.constructor.name].state);
                     } else {
-                        throw new Error("Field: " + field + " does not exist in state of " + this.constructor.name);
+                        if (window[_this.constructor.name].state.hasOwnProperty(field)) {
+                            // field must be changed if state includes it now
+                            if (window[_this.constructor.name].history.length <= 1) {
+                                window[_this.constructor.name].subscribers[i].callback(window[_this.constructor.name].state);
+                            } else {
+                                // check if state field has changed in history
+                                if (window[_this.constructor.name].history[window[_this.constructor.name].history.length - 2][field] !== window[_this.constructor.name].history[window[_this.constructor.name].history.length - 1][field]) {
+                                    window[_this.constructor.name].subscribers[i].callback(window[_this.constructor.name].state[field]);
+                                } else {
+                                    console.log('state updated but field not changed');
+                                }
+                            }
+                        } else {
+                            throw new Error("Field: " + field + " does not exist in state of " + _this.constructor.name);
+                        }
                     }
                 }
             }
-        }
-    }]);
-
-    return Pearl;
-}();
+        };
+        window[this.constructor.name].init();
+    }
+    return window[this.constructor.name];
+};
 
 exports.default = Pearl;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ })
 /******/ ]);
