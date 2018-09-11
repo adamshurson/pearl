@@ -6,11 +6,15 @@ class Pearl {
             window[this.constructor.name].state = {};
             window[this.constructor.name].history = [];
             window[this.constructor.name].init();
+            window[this.constructor.name].extend();
         }
         return window[this.constructor.name];
     }
     init() {
         throw new Error("PearlError: Init function not set");
+    }
+    extend(functionObject) {
+        window[this.constructor.name].functions = functionObject;
     }
     setState(newState) {
         window[this.constructor.name].history.push(window[this.constructor.name].state);

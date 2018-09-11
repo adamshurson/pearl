@@ -92,6 +92,7 @@ var Pearl = function () {
             window[this.constructor.name].state = {};
             window[this.constructor.name].history = [];
             window[this.constructor.name].init();
+            window[this.constructor.name].extend();
         }
         return window[this.constructor.name];
     }
@@ -100,6 +101,11 @@ var Pearl = function () {
         key: "init",
         value: function init() {
             throw new Error("PearlError: Init function not set");
+        }
+    }, {
+        key: "extend",
+        value: function extend(functionObject) {
+            window[this.constructor.name].functions = functionObject;
         }
     }, {
         key: "setState",
